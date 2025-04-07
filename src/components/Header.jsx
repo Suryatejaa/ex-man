@@ -28,6 +28,7 @@ export default function Header({ displayName, profilePic = "/path", refreshTrigg
       setbalance(balance.data)
     }
     fetchBalance()
+    console.log('Balance refreshed')
   },[refreshTrigger])
 
   useEffect(() => {
@@ -52,8 +53,8 @@ export default function Header({ displayName, profilePic = "/path", refreshTrigg
         <Typography variant="h6" sx={{ color: "black", marginLeft: "30px", flex: 1, textAlign: { xs: "center", sm: "left" } }}>
           Expense Tracker
         </Typography>
-         <Typography variant="h6" sx={{ color: "black", marginLeft: "30px", flex: 1, textAlign: { xs: "center", sm: "left" } }}>
-          This Month: {balance}
+         <Typography variant="h6" sx={{ color: "black", marginLeft: "30px", flex: 1, textAlign: { xs: "center", sm: "right" } }}>
+          You still have: ₹{balance}
         </Typography>
         <Box>
           <IconButton

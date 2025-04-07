@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, Typography, Tooltip, CardContent, useMediaQuery, Divider, Modal, TextField, Button } from "@mui/material";
+import { Box, Typography, Tooltip,Snackbar,Alert, CardContent, useMediaQuery, Divider, Modal, TextField, Button } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, IconButton } from '@mui/material';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
@@ -21,6 +21,18 @@ export default function ManageSection({ onFormSubmit }) {
     const [expenses, setExpenses] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
+
+    const [isSnackbarOpen, setIsSnackbarOpen] = useState(false); // State for success alert
+    const [snackbarMessage, setSnackbarMessage] = useState(""); // Message for the Snackbar
+
+    const handleSnackbarClose = () => {
+        setIsSnackbarOpen(false);
+    };
+
+    const handleSuccess = (message) => {
+        setSnackbarMessage(message);
+        setIsSnackbarOpen(true);
+    };
 
 
 
@@ -540,20 +552,23 @@ export default function ManageSection({ onFormSubmit }) {
                 </DialogTitle>
                 <DialogContent dividers>
                     <DialogContent dividers>
-                        {selectedCard === "deleteIncome" && <ItemList items={incomes} mode="delete" type="income" onRefresh={onFormSubmit} onClick={handleCloseModal} />}
-                        {selectedCard === "deleteExpense" && <ItemList items={expenses} mode="delete" type="expense" onRefresh={onFormSubmit} onClick={handleCloseModal} />}
-                        {selectedCard === "editIncome" && <ItemList items={incomes} mode="edit" type="income" onRefresh={onFormSubmit} onClick={handleCloseModal} />}
-                        {selectedCard === "editExpense" && <ItemList items={expenses} mode="edit" type="expense" onRefresh={onFormSubmit} onClick={handleCloseModal} />}
+                        {selectedCard === "deleteIncome" && <ItemList items={incomes} mode="delete" type="income" onRefresh={onFormSubmit} onClick={handleCloseModal} onSuccess={handleSuccess} />}
+                        {selectedCard === "deleteExpense" && <ItemList items={expenses} mode="delete" type="expense" onRefresh={onFormSubmit} onClick={handleCloseModal} onSuccess={handleSuccess} />}
+                        {selectedCard === "editIncome" && <ItemList items={incomes} mode="edit" type="income" onRefresh={onFormSubmit} onClick={handleCloseModal} onSuccess={handleSuccess} />}
+                        {selectedCard === "editExpense" && <ItemList items={expenses} mode="edit" type="expense" onRefresh={onFormSubmit} onClick={handleCloseModal} onSuccess={handleSuccess} />}
                     </DialogContent>
                 </DialogContent>
             </Dialog>
+            <Snackbar
+                open={isSnackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }
-
-
-
-
-
-
-
